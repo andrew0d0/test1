@@ -13,7 +13,7 @@
  */
 
 // TODO: Replace with your actual backend API URL
-const BASE_URL = "https://your-backend-api.com/api";
+const BASE_URL = "http://localhost:4000";
 
 // TODO: Add your API key or authentication headers if required
 const API_HEADERS = {
@@ -36,7 +36,7 @@ export const bypassLink = async (originalUrl: string): Promise<{ bypassedLink: s
   
   try {
     // TODO: Replace this mock implementation with actual API call
-    const response = await fetch(`${BASE_URL}/bypass`, {
+    const response = await fetch(`${BASE_URL}/api/bypass`, {
       method: "POST",
       headers: API_HEADERS,
       body: JSON.stringify({ 
@@ -55,13 +55,14 @@ export const bypassLink = async (originalUrl: string): Promise<{ bypassedLink: s
     const data = await response.json();
     console.log("✅ API Success:", data);
 
-    if (!data.success || !data.bypassedLink) {
-      throw new Error(data.error || "Invalid response from server");
+    if (!data.finalUrl) {
+      throw new Error("No bypassed link returned from server");
     }
 
     return {
-      bypassedLink: data.bypassedLink
+      bypassedLink: data.finalUrl
     };
+
 
   } catch (error) {
     console.error("🚨 Bypass API Error:", error);
